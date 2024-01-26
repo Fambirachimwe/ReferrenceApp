@@ -40,7 +40,7 @@ router.get('/:id', (req, res, next) => {
 // user signup 
 router.post('/signup', (req, res) => {
 
-    const { firstname, lastname, password, email } = req.body;
+    const { firstname, lastname, password, email, department } = req.body;
 
     User.findOne({ "email": email }).then(data => {
         if (data) {
@@ -52,6 +52,7 @@ router.post('/signup', (req, res) => {
                 new User({
                     firstname, lastname,
                     email: email,
+                    department: department,
                     password: hash
                 }).save()
                     .then(data => {
@@ -96,6 +97,7 @@ router.post('/login', (req, res) => {
                     res.status(200).json({
                         accessToken: `${accessToken}`,
                         userId: data._id,
+                        department: data.department,
                         firstname: data.firstname,
                         lastname: data.lastname,
                         email: data.email,

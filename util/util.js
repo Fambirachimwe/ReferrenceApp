@@ -56,9 +56,9 @@ export function generateProjectReportNumber(projectNumber, reportNumberCount) {
 
 const getInitials = (fullName) => {
     // Split the full name into individual words
-    const words = fullName.split(' ');
+    const words = fullName?.split(' ');
     // Get the first letter of each word and convert to uppercase
-    const initials = words.map(word => word.charAt(0).toUpperCase());
+    const initials = words?.map(word => word.charAt(0).toUpperCase());
     // Join the initials into a single string
     return initials.join('');
 }
