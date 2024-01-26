@@ -4,6 +4,8 @@ import express from "express";
 import cors from "cors";
 import reportRoutes from './routes/reports.js';
 import letterRoutes from './routes/letters.js'
+import userRoutes from './routes/user.js';
+import cookieParser from 'cookie-parser';
 
 import { fileURLToPath } from 'url';
 import path, { dirname } from 'path';
@@ -24,7 +26,7 @@ mongoose.connection
 
 const app = express();
 
-// app.use(cookieParser())
+app.use(cookieParser())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -37,6 +39,7 @@ const PORT = process.env.PORT || 5600;
 //     res.send(`server running at port ${PORT}`);
 // });
 
+app.use('/user', userRoutes);
 app.use('/reports', reportRoutes);
 app.use('/letters', letterRoutes)
 
