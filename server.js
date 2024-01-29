@@ -32,8 +32,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // app.use(cors('*'));
 app.use(cors({
-    origin: 'http://localhost:5173'
-    // origin: "https://uipa-referrenceapp.up.railway.app/"
+    // origin: 'http://localhost:5173'
+    origin: "https://uipa-referrenceapp.up.railway.app/"
 }));
 
 
