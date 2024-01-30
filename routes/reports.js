@@ -23,7 +23,8 @@ router.post('/project-reports', async (req, res) => {
             referenceNumber: reference,
             year: currentYear,
             projectNumber: req.body.projectNumber,
-            createdBy: req.body.createdBy
+            createdBy: req.body.createdBy,
+            rtype: req.body.rtype
         });
 
         const savedReport = await projectReport.save();
@@ -44,13 +45,16 @@ router.post('/general-reports', async (req, res) => {
     // Get the current year
     const currentYear = currentDate.getFullYear();
 
+    console.log(req.body)
+
     try {
         const generalReport = new GeneralReport({
             title: req.body.title,
             referenceNumber: reference,
             year: currentYear,
             department: req.body.department,
-            createdBy: req.body.createdBy
+            createdBy: req.body.createdBy,
+            // rtype: req.body.rtype
         });
 
         const savedReport = await generalReport.save();
@@ -82,12 +86,36 @@ router.get('/:id', async (req, res) => {
 
 // Update a report
 router.put('/:id', async (req, res) => {
+
+    // check if department or project number has changed
+
+    const oldReport = await Report.findById(req.params.id);
+    const currentYear = new Date().getFullYear();
+
+    const oldCount = oldReport.referenceNumber.split('-')[3];
+    let refNumber;
+
+    if (oldReport.department !== req.body.depaprtment || oldReport.projectNumber !== req.body.projectNumber) {
+
+        if (req.body.rtype === "GeneralReport") {
+            refNumber = `RPT-${req.body.department || oldReport.depaprtment}-${currentYear}-${oldCount}`
+        } else {
+            refNumber = `RPT-${req.body.projectNumber || oldReport?.projectNumber}-${currentYear}-${oldCount}`
+        }
+
+    }
+
+    // console.log(req.body)
+
+
+
     try {
         const updatedReport = await Report.findByIdAndUpdate(
             req.params.id,
             {
                 title: req.body.title,
-                referenceNumber: req.body.referenceNumber,
+                // rtype: req.body.type,
+                referenceNumber: refNumber,
                 year: req.body.year,
                 department: req.body.department, // Only for GeneralReport
                 projectNumber: req.body.projectNumber, // Only for ProjectReport
@@ -110,5 +138,7 @@ router.delete('/:id', async (req, res) => {
         res.status(404).json({ message: 'Report not found' });
     }
 });
+
+
 
 export default router;

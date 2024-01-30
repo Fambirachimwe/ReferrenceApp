@@ -4,7 +4,8 @@ const reportSchema = new Schema({
     title: String,
     referenceNumber: String,
     year: Number,
-    createdBy: String
+    createdBy: String,
+    // rtype: String
 
 }, {
     _id: true,
